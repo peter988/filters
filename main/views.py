@@ -8,6 +8,7 @@ from django.conf import settings
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
+import os
 
 # Form class
 class SearchForm(forms.Form):
@@ -24,9 +25,9 @@ def search_view(request):
             chrome_options = Options()
             chrome_options.add_argument('--ignore-certificate-errors')
             chrome_options.add_argument('--headless')
-            df = pd.read_excel(settings.MEDIA_ROOT / 'FIRST CATALOGUE NEW.xlsx')
+            df = pd.read_excel(os.path.join(settings.MEDIA_ROOT, 'FIRST CATALOGUE NEW.xlsx'))
             print(df)
-            service = Service(settings.MEDIA_ROOT / 'chromedriver.exe')  # Update path if necessary
+            service = Service(os.path.join(settings.MEDIA_ROOT, 'chromedriver.exe'))  # Update path if necessary
             driver = webdriver.Chrome(service=service, options=chrome_options)
             driver.get(f'https://www.fleetguard.com/s/searchResults?propertyVal={search_term}&hybridSearch=false&language=en_US')
             time.sleep(5)
@@ -41,7 +42,7 @@ def search_view(request):
             for element in elements: 
                 unique[element.get_text().split()[0]] = 1
 
-            df = pd.read_excel(settings.MEDIA_ROOT / 'FIRST CATALOGUE NEW.xlsx')
+            df = pd.read_excel(os.path.join(settings.MEDIA_ROOT, 'FIRST CATALOGUE NEW.xlsx'))
             for element, _ in unique.items():
                 if str(element) in df['OEM'].to_list():
                     h = ' EXIST'
