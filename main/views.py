@@ -27,8 +27,8 @@ def search_view(request):
             chrome_options.add_argument('--headless')
             df = pd.read_excel(os.path.join(settings.MEDIA_ROOT, 'FIRST CATALOGUE NEW.xlsx'))
             print(df)
-            service = Service('/var/task/media/chromedriver')  # Update path if necessary
-            driver = webdriver.Chrome(service=service, options=chrome_options)
+            # service = Service('/var/task/media/chromedriver')  # Update path if necessary
+            driver = webdriver.Chrome(options=chrome_options)
             driver.get(f'https://www.fleetguard.com/s/searchResults?propertyVal={search_term}&hybridSearch=false&language=en_US')
             time.sleep(5)
             html = driver.page_source
